@@ -1,20 +1,32 @@
 import './App.css';
-// import Contact from './Components/contact';
-// import Login from './Components/login';
+import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
+import Header from './Components/Header';
+import Contact from './Components/contact';
+
+import About from './Components/about';
+import Login from './Components/Login';
+import Footer from './Components/Footer';
+
 import Register from './Components/register';
-// import About from './Components/about';
-// import Home from './Components/home';
+import Home from './Components/home';
 
 function App() {
   return (
-    <>
-{/* <Home/> */}
-{/* <About/> */}
-{/* <Contact/> */}
-{/* <Login/> */}
-
-<Register/>
-    </>
+    <Router>
+    <Header />
+    <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/about" element={<About />} />
+      {/* <Route path="/staff" element={<Staff />} /> */}
+      {/* <Route path="/news" element={<News />} /> */}
+      {/* <Route path="/gallery" element={<Gallery />} /> */}
+      {/* <Route path="/elements" element={<Elements />} /> */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
+    <Footer/>
+  </Router>
   );
 }
 
