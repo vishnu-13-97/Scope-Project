@@ -1,0 +1,105 @@
+    /* Courses Section */
+    .box {
+        position: relative;
+        background: rgb(235, 233, 233);
+        border-radius: 10px;
+        padding: 20px;
+      }
+      
+      .box i {
+        position: absolute;
+        top: -20px;
+        right: 20px;
+      }
+      
+      .html {
+        color: rgb(25, 94, 54);
+      }
+      
+      .css {
+        color: rgb(104, 179, 35);
+      }
+      
+      .js {
+        color: rgb(28, 98, 179);
+      }
+
+      
+          /* Main Content Styles */
+    .main-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .main-top i {
+        cursor: pointer;
+      }
+      
+      .card {
+        border-radius: 10px;
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+      }
+      
+      .btn-danger {
+        background: #dc3545;
+        border: none;
+      }
+      
+      .btn-danger:hover {
+        background: #c82333;
+      }
+      .logo img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      /* Sidebar Styles */
+      .sidebar {
+        height: 100vh;
+        background: #f8f9fa;
+      }
+      
+      .sidebar .nav-link {
+        font-size: 16px;
+        padding: 10px 15px;
+      }
+      
+      .sidebar .nav-link.active {
+        background: #e9ecef;
+        border-radius: 5px;
+      }
+      
+      .sidebar .logout {
+        margin-top: auto;
+      }
+      
+      .logo img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      /* Sidebar Styles */
+      .sidebar {
+        height: 100vh;
+        background: #f8f9fa;
+      }
+      
+      .sidebar .nav-link {
+        font-size: 16px;
+        padding: 10px 15px;
+      }
+      
+      .sidebar .nav-link.active {
+        background: #e9ecef;
+        border-radius: 5px;
+      }
+      
+      .sidebar .logout {
+        margin-top: auto;
+      }
+      
+    
