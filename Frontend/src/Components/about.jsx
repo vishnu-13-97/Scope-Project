@@ -111,12 +111,49 @@ function About() {
           </div>
           
         </div>
-       <div style={{backgroundColor:"#021b5b",height:"1000px"}}>
+     
+
+       <div
+      className="bg-cover text-center text-white py-5"
+      style={{
+        backgroundColor: '#041a6b',
+        backgroundImage: 'url(https://scopeindia.org/images/snowpark-home-slider-background.jpg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center bottom',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="container">
+        <div className="row text-center">
+          <div className="col-md-4 mb-4 mt-5" >
+            <h4 className="text-warning fw-bold">1000+</h4>
+            <h5>STUDENTS ARE<br />TRAINED EVERY YEAR</h5>
+          </div>
+          <div className="col-md-4 mb-4" style={{ marginTop: '-40px' }}>
+            <h4 className="text-warning fw-bold">30+</h4>
+            <h5>COMPUTER COURSES</h5>
+          </div>
+          <div className="col-md-4 mb-4 mt-5">
+            <h4 className="text-warning fw-bold">95%</h4>
+            <h5>STUDENTS ARE GETTING<br />PLACED EVERY YEAR</h5>
+          </div>
+        </div>
+      </div>
+      <div
+        className="position-relative"
+        style={{
+          backgroundImage: 'url(https://scopeindia.org/images/snowpark-home-slide-decoration-bottomm.png)',
+          height: '127px',
+          bottom: '-20px',
+            top:"50px"
+        }}
+      ></div>
+    </div>
 
        </div>
-      <img style={{width:"100%",height:"100px",color:"white"}} src="assets/scope Images/snowpark-home-slide-decoration-bottomm.png" alt="img" />
+      {/* <img style={{width:"100%",height:"100px",color:"white"}} src="assets/scope Images/snowpark-home-slide-decoration-bottomm.png" alt="img" /> */}
 
-      </div>
+
 
       
 

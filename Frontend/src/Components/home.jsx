@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate= useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
 
   const [formData, setFormData] = useState({
@@ -408,6 +410,7 @@ function Home() {
                           height: "50px",
                           margin: "10px",
                         }}
+                        onClick={()=> navigate('/courses')}
                       >
                         Courses
                       </button>
@@ -419,7 +422,9 @@ function Home() {
                           borderColor: "#32d732",
                           height: "50px",
                           margin: "10px",
+                        
                         }}
+                        onClick={()=> navigate('/register')}
                       >
                         Register Now
                       </button>

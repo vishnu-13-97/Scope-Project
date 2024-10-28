@@ -90,7 +90,7 @@ function Contact() {
           <div className="row align-items-center justify-content-center">
             <div className="col-12">
               <div className="row justify-content-center display-4">
-                <div className="col-lg-12 text-center" style={{ marginTop: "-20px" }}>
+                <div className="col-lg-12  text-center" style={{ marginTop: "-20px" }}>
                   <h1 className="mb-4 heading" data-aos="fade-up" data-aos-delay="100" style={{ color: "#fbba02", fontFamily: "Viga", fontSize: "55px", fontWeight: "100" }}>
                     SCOPE INDIA is open 365 days a year
                   </h1>
@@ -98,7 +98,7 @@ function Contact() {
                     Let's discuss your career, 24/7 free Consultation
                   </h2>
                 </div>
-                <div className="d-flex flex-column align-items-center col-sm-10 col-md-4 col-lg-12 justify-content-center container">
+                <div className="d-flex flex-column align-items-center  justify-content-center container">
                   <img 
                     className="img-fluid d-block" 
                     style={{ width: "300px" }} 
@@ -114,7 +114,7 @@ function Contact() {
                   <div
   style={{
     borderRadius: "10px",
-    width: "100%",
+    width: "90%",
     backgroundImage: "url('assets/scope Images/si-call-back-bg.jpg')",
     backgroundColor: "green",
     marginTop: "90px",
@@ -124,7 +124,7 @@ function Contact() {
   className="pb-5"
 >
   <div className="row m-0" style={{ width: "100%", paddingTop: "20px", justifyContent: "center" }}>
-    <div className="col-12 col-md-6 col-lg-5" style={{ border: "5px solid black" }}>
+    <div className=" col-md-6 col-lg-6" style={{ border: "5px solid black" }}>
       <iframe
         style={{ borderRadius: "5px" }}
         width="100%"

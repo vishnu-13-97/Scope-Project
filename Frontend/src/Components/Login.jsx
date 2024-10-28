@@ -31,17 +31,23 @@ function Login() {
     e.preventDefault();
 
     setError('');
+    if (!user.username || !user.password) {
+      setError('Please fill in both username and password.');
+      return;
+    }
+    setUser(prevUser =>({...prevUser,errors:{}}));
+    setRememberMe(prevRememberme =>({...prevRememberme,errors:{}}));
     try {
        await axios.post('http://localhost:5000/login', {
         email: user.username,
         password: user.password,
-        rememberMe:rememberMe.rememberMe
-      }, {
-        withCredentials: true
-      });
-
-      
-        navigate('/firstTime');
+        rememberMe:rememberMe
+      },{
+        headers:{
+          'Content-Type':'application/json'},
+           withCredentials: true
+      })
+          navigate('/dashboard');
       
     } catch (err) {
       if (err.response && err.response.status === 400) {
@@ -73,7 +79,7 @@ function Login() {
               <form onSubmit={handleSubmit} className="form-box" style={{ backgroundColor: "#eeeeee" }}>
                 <div className="row">
                   <div className="col-12 mb-3">
-                    <input type="email" className="form-control" name="username" value={user.username} onChange={handleChange} required placeholder="Email" />
+                    <input type="email" className="form-control" autoComplete='username' name="username" value={user.username} onChange={handleChange} required placeholder="Email" />
                   </div>
                   <div className="col-12 mb-3">
                     <input type="password" className="form-control"  autocomplete="current-password" name="password" value={user.password} onChange={handleChange} required placeholder="Password" />
@@ -81,8 +87,8 @@ function Login() {
 
                   <div className="col-12">
                   {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                    <input type="submit" value="Login" className="btn btn-primary" />
+          
+                    <input type="submit" value="Login" className="btn btn-primary mb-2" />
                     <label className="control control--checkbox">
                       <span className="caption">Keep me logged in</span>
                       <input type="checkbox" id="rememberMe" onChange={(e) => setRememberMe(e.target.checked)}/>
@@ -92,7 +98,7 @@ function Login() {
 
                   <div className="col-12 mb-3">
                     <div className='row'>
-                      <a href="/">Forgot Password</a>
+                      <a href="/firstTime" onClick={handleNavigate}>Forgot Password</a>
                     </div>
                   
                     <div className='row'>

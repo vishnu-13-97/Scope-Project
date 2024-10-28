@@ -87,10 +87,13 @@ function Register() {
     data.append('country', formData.country);
     data.append('state', formData.state);
     data.append('city', formData.city);
-    data.append('hobbiesList ', formData.hobbiesList.join(','));
+;
     if (formData.avatar) {
       data.append('avatar', formData.avatar);
     }
+    formData.hobbiesList.forEach(hobby => {
+      data.append('hobbiesList[]', hobby); // Use 'hobbiesList[]' to indicate multiple values
+  });
   
     try {
       await axios.post("http://localhost:5000/register", data, {

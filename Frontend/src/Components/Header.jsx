@@ -37,6 +37,11 @@ const Header = () => {
 
               {/* Right-aligned Log In and Register */}
               <ul className="js-clone-nav d-none d-lg-inline-block site-menu ml-auto text-right">
+              <li>
+                  <Link to="/courses" className="small mr-3">
+                    <span className=""></span> Courses
+                  </Link>
+                </li>
                 <li>
                   <Link to="/login" className="small mr-3">
                     <span className="icon-lock"></span> Log In

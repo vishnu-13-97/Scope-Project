@@ -32,8 +32,9 @@ function FirstTimelog() {
      }
     ,{
       headers:{
-        'Content-Type':'application/json'
-      }})
+        'Content-Type':'application/json'},
+         withCredentials: true
+    } )
       setIsEmailSent(true);
       
    } catch (error) {
@@ -66,8 +67,9 @@ function FirstTimelog() {
         otp: otp.otp // Ensure this holds the correct value
       }, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json'},
+          withCredentials: true
+        
       });
 
       console.log("Response data:", response.data); // Log response from server
@@ -96,56 +98,64 @@ function FirstTimelog() {
  
 
 
-  // Handle Password submission
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-     setSuccessMessage('');
-    setPasswords(prevPasswords =>({...prevPasswords,errors:{}}));
-
-    try {
-      const response = await axios.post('http://localhost:5000/set-password',{
-        newPassword:passwords.newPassword,
-        confirmPassword:passwords.confirmPassword,
-        
+const handlePasswordSubmit = async (e) => {
+  e.preventDefault();
+  setSuccessMessage('');
+  
+  // Reset errors before the new submission
+  setPasswords(prevPasswords => ({ ...prevPasswords, errors: {} }));
+  
+  try {
+    console.log("password",passwords.newPassword);
+    console.log("confirm",passwords.confirmPassword);
+    
+    
+      const response = await axios.post('http://localhost:5000/set-password', {
+          newPassword: passwords.newPassword,
+          confirmPassword: passwords.confirmPassword,
+      }, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true // Ensures cookies/session info is sent
+      });
       
-      },{
-        headers:{
-          'Content-Type':'application/json'
-        },
-        
-          withCredentials: true
-        
-      })
-      if(response.data.message==='Password reset successfully'){
-        setPasswords((prevPasswords)=>({
-          ...prevPasswords,message:{passwords:"Password reset successfully"}
-        }))
-      }
-       setSuccessMessage('Password reset successfully');
-               setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
+      if (response.data.message === 'Password reset successfully') {
+          // Update success state and message
+          setPasswords(prevPasswords => ({
+              ...prevPasswords,
+              message: { passwords: 'Password reset successfully' }
+          }));
+          setSuccessMessage('Password reset successfully');
 
-           navigate('/login')
-    } catch (error) {
-      if(error.response && error.response.data){
-        console.log('Error response data:',error.response.data);
-        if(error.response.data.error === 'Passwords do not match'){
-          setPasswords((prevPasswords)=>({
-            ...prevPasswords,errors:{passwords:"Passwords do not match"}
-          }))
-        }else if(error.response.data.error === 'No email found.Please verify OTP first .'){
-          setPasswords((prevPasswords)=>({
-            ...prevPasswords,errors:{passwords:"No email found.Please verify OTP first ."}
-          }))
-        }
-        
-      }else{
-        console.error('Error posting data:',error);
+          // Clear the success message after 5 seconds
+          setTimeout(() => {
+              setSuccessMessage('');
+          }, 5000);
+
+          // Navigate to login page after success
+          navigate('/login');
       }
-      
-    }
-  };
+  } catch (error) {
+      if (error.response && error.response.data) {
+          console.log('Error response data:', error.response.data);
+
+          // Handle specific errors returned from the backend
+          if (error.response.data.error === 'Passwords do not match') {
+              setPasswords(prevPasswords => ({
+                  ...prevPasswords,
+                  errors: { passwords: 'Passwords do not match' }
+              }));
+          } else if (error.response.data.error === 'No email found. Please verify OTP first.') {
+              setPasswords(prevPasswords => ({
+                  ...prevPasswords,
+                  errors: { passwords: 'No email found. Please verify OTP first.' }
+              }));
+          }
+      } else {
+          // Log any unexpected errors
+          console.error('Error posting data:', error);
+      }
+  }
+};
 
   return (
     <>
@@ -252,10 +262,11 @@ function FirstTimelog() {
                         <label htmlFor="newPassword">New Password</label>
                         <input
                           type="password"
+                          name='newPassword'
                           className="form-control"
                           placeholder="Enter new password"
                           value={passwords.newPassword}
-                          onChange={(e) => setPasswords(e.target.value)}
+                          onChange={(e) => setPasswords({...passwords,newPassword:e.target.value})}
                           required
                         />
                          {passwords.errors?.passwords && (
@@ -269,10 +280,11 @@ function FirstTimelog() {
                         <label htmlFor="confirmPassword">Confirm Password</label>
                         <input
                           type="password"
+                          name='confirmPassword'
                           className="form-control"
                           placeholder="Confirm password"
                           value={passwords.confirmPassword}
-                          onChange={(e) => setPasswords(e.target.value)}
+                          onChange={(e) => setPasswords({...passwords,confirmPassword:e.target.value})}
                           required
                         />
                          {passwords.errors?.passwords && (

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 
 
@@ -9,12 +10,16 @@ const StudentSchema = mongoose.Schema({
     },
     lastName: {
         type: String,
-        required: true
+     
     },
     email: {
         type: String,
         required: true,
         unique:true,
+        
+    },
+    phone:{
+        type:String,
         
     },
     dateOfBirth: {
@@ -38,17 +43,29 @@ const StudentSchema = mongoose.Schema({
         required: true
     },
     hobbies:{
-        type: [String],
-    enum: ['Reading', 'Gaming', 'Travelling', 'Cooking', 'Gardening'],
-    },
+    type: [String],
+    enum: ['Reading','Gaming','Travelling','Cooking','Gardening'],
+  },
     avatar:{
         type: String,
         required: true
     },
     password:{
         type: String
-    }
-   
+    },
+    enrolledCourses: [
+        {
+            courseId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Course', // Reference to the Course model
+                required: true
+            },
+            courseName: {
+                type: String,
+                required: true
+            }
+        }
+    ]
 });
 
 const student = mongoose.model('Student', StudentSchema);

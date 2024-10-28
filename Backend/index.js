@@ -1,13 +1,10 @@
 const express = require("express");
 const app = express();
-const jwt = require('jsonwebtoken');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
 require('dotenv').config();
-const bodyparser = require('body-parser');
-app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json());
 const mongodbUrl = `mongodb+srv://user:user@mongodbtrial.3w9nzbg.mongodb.net/?retryWrites=true&w=majority&appName=mongodbtrial`
 const studentmodel = require('./models/student');
@@ -17,37 +14,34 @@ const contactmodel = require('./models/contact')
 const coursemodel = require('./models/courses')
 path.join(__dirname, 'uploads');
 const nodemailer = require('nodemailer');
-const session = require('express-session');
 app.use('/uploads', express.static('uploads'));
 const bcrypt = require('bcrypt');
 const MongoStore = require('connect-mongo');
-
+const jwt = require('jsonwebtoken');
 
 app.use(cookieParser());
-
-
-
-
-
-  app.use(session({
+app.use(session({
     secret: process.env.SESSION_PASS,
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: mongodbUrl , ttl: 14 * 24 * 60 * 60}),
     cookie: {
-        secure: false, // should be true in production
+        secure: false, 
         httpOnly: true,
-        sameSite: 'Lax',
+        sameSite: 'lax',
          path: '/',
         maxAge: 10 * 60 * 1000 // 10 minutes
     }
 }));
 
-
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend origin
-  credentials: true // Allow credentials (cookies)
+  origin: 'http://localhost:3000', 
+  credentials: true 
 }));
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 let transporter = nodemailer.createTransport({
     host:'smtp.gmail.com',
@@ -99,17 +93,6 @@ const upload = multer({
 }).single('avatar');  // Accept a file with the form field name 'myFile'
 
 
-// Register route to handle file uploads and form data
-
-
-// app.get('/set', (req, res) => {
-//     req.session.views = (req.session.views || 0) + 1;
-//     res.send(`Session set. Views: ${req.session.views}`);
-// });
-
-// app.get('/get', (req, res) => {
-//     res.send(`Views: ${req.session.views || 0}`);
-// });
 
 app.post('/register', async(req, res) => {
     // Multer handles the file upload
@@ -125,7 +108,8 @@ app.post('/register', async(req, res) => {
         }
 
        
-        const { firstname,lastName,dateOfBirth,gender,email,phone,country,state,city,hobbiesList} = req.body;  
+        const { firstname,lastName,dateOfBirth,gender,email,phone,country,state,city,hobbiesList} = req.body; 
+       
            const avatar = req.file.path;
          const text = `Hi ${req.body.firstname} Your registration succesfull .Login and create new password`
     let mailOptions = {
@@ -185,9 +169,10 @@ app.post('/register', async(req, res) => {
 // First Time Log in route
 
 app.post('/send-otp', async (req, res) => {
+  const { email } = req.body;
+
     try {
-      const { email } = req.body;
-      console.log(email);
+     
       
   
       // Check if the email is registered
@@ -201,6 +186,8 @@ app.post('/send-otp', async (req, res) => {
     req.session.otp = otp;
     req.session.otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
     req.session.email=email;
+    
+
 
     
   
@@ -230,61 +217,59 @@ app.post('/send-otp', async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   });
-  
-app.post("/verify-otp", (req, res) => {
-    console.log('session data',req.session);
-    
-    
 
-    
-    
+  
+  app.post("/verify-otp", (req, res) => {
     const { otp } = req.body;
-    req.session.otp = otp;
- 
-    console.log("Received OTP from client:", otp); 
-    console.log("Stored OTP in session:", req.session.otp); 
   
     
-    if (!req.session.otp) {
-      console.log("No OTP stored in session"); 
-      return res.status(400).json({ error: "Invalid OTP" });
-    }
+    try {
+     
+      
+    
+      
+      // Check if OTP exists in the session
+      if (!req.session.otp) {
+        console.log("No OTP stored in session");
+        return res.status(400).json({ error: "Invalid OTP" });
+      }
   
-    if (req.session.otp !== otp.trim()) {
-      console.log("Session OTP and provided OTP do not match"); 
-      return res.status(400).json({ error: "Invalid OTP" });
-    }
+      // Validate if the provided OTP matches the session OTP
+      if (req.session.otp !== otp.trim()) {
+        console.log("Session OTP and provided OTP do not match");
+        return res.status(400).json({ error: "Invalid OTP" });
+      }
   
-   
-    if (Date.now() > req.session.otpExpires) {
-      console.log("OTP expired");
+      // Check if the OTP has expired
+      if (Date.now() > req.session.otpExpires) {
+        console.log("OTP expired");
+        req.session.otp = null;
+        req.session.otpExpires = null;
+        return res.status(400).json({ error: "OTP expired" });
+      }
+  
+      // Retrieve the email from the session
+      const email = req.session.email;
+     
+  
+      // Clear OTP and its expiry from session
       req.session.otp = null;
       req.session.otpExpires = null;
-      return res.status(400).json({ error: "OTP expired" });
-    }
   
-    console.log("OTP verified successfully"); // Log success
-   
-    const email = req.session.email;
-    console.log("Email associated with this OTP:", email);
-    
-    req.session.otp = null;
-    req.session.otpExpires = null;
-
-    
-    
- 
-    return res.status(200).json({ message: "OTP verified",email:email });
+      // Send success response
+      return res.status(200).json({ message: "OTP verified", email: email });
+  
+    } catch (error) {
+      console.error("Error during OTP verification process:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
   });
-
+  
 
   app.post('/set-password', async (req, res) => {
+    console.log("Received body:", req.body);
     try {
-      req.session.email = req.session.email;
-  
-      console.log(req.session);
-  
-      const { newPassword, confirmPassword } = req.body;
+        const { newPassword, confirmPassword } = req.body;
   
       if (newPassword !== confirmPassword) {
         return res.status(400).json({ error: "Passwords do not match" });
@@ -295,7 +280,8 @@ app.post("/verify-otp", (req, res) => {
       }
   
       // Hash the new password
-      const hashedPassword = await bcrypt.hash(newPassword, 15);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
   
       // Update the password in the database
       await studentmodel.updateOne({ email: req.session.email }, { password: hashedPassword });
@@ -317,22 +303,24 @@ app.post('/login', async (req, res) => {
 
     
     try {
-        // Find user by username (correctly using await)
+       
         const user = await studentmodel.findOne({ email });
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
-        // Compare the provided password with the stored hashed password
         const isMatch = await bcrypt.compare(password, user.password);
       
         
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-        // If the login is successful, you can proceed to generate a JWT or establish a session
-        const token = jwt.sign({ id: user._id, username: user.name },process.env.JWT_SECRET,    { expiresIn: rememberMe ? '7d' : '1h' });
-        console.log(token);
+        const token = jwt.sign({ id:user._id, username:user.name,email:user.email},process.env.JWT_SECRET,    { expiresIn: rememberMe ? '7d' : '1h' });
+      
         
-        res.cookie('token', token, { httpOnly: true, secure: false, maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 1 * 60 * 60 * 1000  }); // Add secure:true in production
-        req.session.user = { id: user.id, username: user.name };
+        res.cookie('token', token, { httpOnly: true, secure: false, maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 1 * 60 * 60 * 1000 ,sameSite:'lax' });
+         
+
+      
+         
+        req.session.user = { id: user.id, username: user.name};
         res.status(200).json({ message: 'Login successful'});
         
         
@@ -346,30 +334,161 @@ app.post('/login', async (req, res) => {
 
 // Middleware to authenticate with JWT
 const authenticateJWT = (req, res, next) => {
-    const token = req.cookies.token;
-    console.log("token ",token);
-    
+   
+  const token = req.cookies.token;
+
+  
     
     if (!token) return res.status(403).json({ message: 'Token not found' });
 
     try {
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
-        req.user = decoded; // Store decoded user info in the request
+        req.user = decoded; 
+  
+        
         next();
     } catch (err) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 };
 
-app.get('/protected', authenticateJWT, (req, res) => {
-    res.json({ message: `Hello, ${req.user.username}. You have access!` });
+app.get('/dashboard', authenticateJWT, async (req, res) => {
+  try {
+   
+    const user = await studentmodel.findOne({ email:req.user.email }); 
+   
+    
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+
+    }
+
+    // res.status(200).json(user); 
+
+    res.json({
+      name: user.name,            
+      lastName: user.lastName,    
+      email: user.email,          
+      country: user.country,      
+      avatar: user.avatar,
+      enrolledCourses:user.enrolledCourses
+      
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
-app.post('/logout', (req, res) => {
-    req.session.destroy(); // Destroy session
-    res.clearCookie('token'); // Clear cookie
-    res.json({ message: 'Logged out successfully' });
+
+
+app.post('/dashboard/changepassword', authenticateJWT, async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+console.log(req.session);
+console.log(req.user);
+
+
+  try {
+      // Find the user by the id stored in the JWT
+      const user = await studentmodel.findById(req.user.id);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      // Validate session email matches the user email
+      if (req.session.user.id !== user.id) {
+          return res.status(400).json({ message: 'Email validation failed' });
+      }
+
+      // Compare the current password with the stored hashed password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) return res.status(400).json({ message: 'Incorrect current password' });
+
+      // Check if newPassword and confirmPassword match
+      if (newPassword !== confirmPassword) {
+          return res.status(400).json({ message: 'New password and confirmation do not match' });
+      }
+
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      // Update the user's password in the database
+      user.password = hashedPassword;
+      await user.save();
+
+      res.status(200).json({ message: 'Password changed successfully' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+  }
 });
+
+
+app.get('/dashboard/edit-profile',authenticateJWT,async(req,res)=>{
+  try {
+    
+    const user = await studentmodel.findById(req.user.id);
+    if (!user) return res.status(404).send('User not found');
+
+
+    res.json(user);
+
+
+  } catch (error) {
+    res.status(500).send('Server error');
+    
+  }
+})
+
+
+app.put('/dashboard/update-profile', authenticateJWT, (req, res) => {
+  
+  
+  
+  upload(req, res, async (err) => {
+    if (err) {
+
+      return res.status(400).json({ error: err.message });
+    }
+
+    try {
+      const { name, lastName, gender, email, phone, country, state, city, hobbies,avatar } = req.body;
+      const userId = req.user.id;
+     
+      
+      const updateData = { name, lastName, gender, email, phone, country, state, city, hobbies,avatar };
+    
+      if (typeof req.body.hobbies === 'string') {
+        req.body.hobbies = JSON.parse(req.body.hobbies);
+      }
+    
+      console.log("Parsed hobbies:", req.body.hobbies); // Check if hobbies is an array
+    
+
+      if (req.file) {
+        updateData.avatar = req.file.path;
+      }
+    
+      
+      
+
+      const updatedUser = await studentmodel.findByIdAndUpdate(userId, updateData, { new: true });
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).json({ message: 'Error updating profile', error });
+    }
+  });
+});
+
+
+
+
 
 // Contact route
 
@@ -421,9 +540,104 @@ app.post('/set-course', async (req, res) => {
       res.status(500).json({ error: "Failed to create course" });
     }
   });
+
+
+
   
+  app.get('/dashboard/courses',authenticateJWT, async (req, res) => {
+    try {
+      const courses = await coursemodel.find();
+      res.status(200).json(courses); 
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      res.status(500).json({ message: 'Server error, could not retrieve courses.' });
+    }
+  });
 
 
+  app.get('/dashboard/courses',async (req, res) => {
+    try {
+      const courses = await coursemodel.find();
+      res.status(200).json(courses); 
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      res.status(500).json({ message: 'Server error, could not retrieve courses.' });
+    }
+  });
+
+  
+  app.post('/dashboard/add-course', authenticateJWT, async (req, res) => {
+    const studentId = req.user.id; // Get the student ID from the JWT
+    const { courseId } = req.body; // Get the course ID from the request body
+
+    try {
+        // Find the course by its ID
+        const course = await coursemodel.findById(courseId);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        // Find the student and check their enrolledCourses
+        const student = await studentmodel.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Check if the student is already enrolled in a course
+        if (student.enrolledCourses.length > 0) {
+            // Update the existing course enrollment
+            student.enrolledCourses[0] = {
+                courseId: course._id,
+                courseName: course.CourseName // Update course name here
+            };
+        } else {
+            // Enroll the student in the new course
+            student.enrolledCourses.push({
+                courseId: course._id,
+                courseName: course.CourseName // Add course name here
+            });
+        }
+
+        // Save the updated student document
+        await student.save();
+
+        // Respond with a success message
+        res.status(200).json({ message: 'Successfully enrolled', courseName: course.CourseName });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error enrolling in course', error });
+    }
+});
+
+
+
+
+  app.post('/dashboard/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err); // Log any errors
+        return res.status(500).json({ message: 'Could not log out' });
+      }
+  
+      // Log success before sending response
+      console.log('Session destroyed, clearing cookies...');
+      
+      // Clear cookies (ensure same settings)
+      res.clearCookie('token'); // Clear specific cookie if applicable
+      res.clearCookie('connect.sid', {
+        path: '/',
+        httpOnly: true,
+        secure: false, // Adjust based on environment (false for localhost, true for production https)
+        sameSite: 'Lax'
+      });
+  
+      // Send success response
+      return res.status(200).json({ message: 'Logged out successfully' });
+    });
+  });
+  
+  
+  
 
 // Connect to MongoDB
 mongoose.connect(mongodbUrl)
