@@ -42,7 +42,7 @@ function DashboardChangepassword() {
         setSuccessMessage('Password Updated Successfully.');
         setTimeout(() => {
           setSuccessMessage('');
-          navigate('/dashboard')
+        window.location.href = '/login'
         }, 3000);
           
       

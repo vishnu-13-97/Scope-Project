@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -27,6 +27,23 @@ function Login() {
     }));
   };
 
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/student/login', { withCredentials: true });
+        if (response.status === 200 && response.data.user) {
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.log('User not logged in or error occurred', error);
+      }
+    };
+
+    checkLoginStatus();
+  }, [navigate]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,7 +55,7 @@ function Login() {
     setUser(prevUser =>({...prevUser,errors:{}}));
     setRememberMe(prevRememberme =>({...prevRememberme,errors:{}}));
     try {
-       await axios.post('http://localhost:5000/login', {
+       await axios.post('http://localhost:5000/student/login', {
         email: user.username,
         password: user.password,
         rememberMe:rememberMe
@@ -65,14 +82,14 @@ function Login() {
           <div className="col-12">
             <div className="row justify-content-center ">
               <div className="col-lg-6 text-center ">
-                <h1 className="mb-4 heading " style={{ paddingTop: "250px", color: "#fbba02", fontFamily: "Viga" }}>LOGIN</h1>
+                <h1 className="mb-4 heading " style={{ paddingTop: "150px", color: "#fbba02", fontFamily: "Viga" }} data-aos="fade-up" data-aos-delay="200">LOGIN</h1>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="untree_co-section" style={{ backgroundColor: "#051a69" }}>
+      <div className="untree_co-section" style={{ backgroundColor: "#051a69",paddingTop:"10px" }}>
         <div className="container">
           <div className="row mb-5 justify-content-center">
             <div className="col-lg-5 mx-auto order-1" data-aos="fade-up" data-aos-delay="200">

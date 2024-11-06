@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Contact() {
+  const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState('');
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,32 +25,35 @@ function Contact() {
     e.preventDefault();
     setFormData((prevFormData) => ({ ...prevFormData, errors: {} }));
     setSuccessMessage("");
-  
+
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email); 
     data.append('subject', formData.subject);
     data.append('message', formData.message); 
-  
+
     try {
-      await axios.post('http://localhost:5000/contact', data, {
-        headers: { 'Content-Type': 'application/json' }
+      const response = await axios.post('http://localhost:5000/student/contact', data, {
+        headers: { 'Content-Type': 'application/json' },
       });
+
+      if (response.status === 200) {
+        setSuccessMessage(response.data.message);
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+           navigate('/contact')
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          errors: {}
+        });
+      }
       
-      setSuccessMessage('Thank you for enquiring us, we will contact you shortly!');
-       setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
-  
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        errors: {}
-      });
-    
     } catch (error) {
+      // Error handling logic remains unchanged
       if (error.response) {
         if (error.response.data && error.response.data.errors) {
           setFormData((prevFormData) => ({
@@ -74,8 +78,8 @@ function Contact() {
         }));
       }
     }
-  };
-  
+  }; 
+
 
   return (
     <>

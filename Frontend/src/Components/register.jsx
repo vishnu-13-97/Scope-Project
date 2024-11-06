@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const hobbiesList = ['Reading','Gaming','Travelling','Cooking','Gardening'];
@@ -44,6 +45,7 @@ const cities = {
 };
  
 function Register() {
+  const navigate = useNavigate();
 
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -96,17 +98,24 @@ function Register() {
   });
   
     try {
-      await axios.post("http://localhost:5000/register", data, {
+    const response =  await axios.post("http://localhost:5000/student/register", data, {
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
       });
-      setSuccessMessage('Registration successful! Please check your email.');
-       setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
 
+      if (response.status === 201) {
+        setSuccessMessage(response.data.message);
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+           navigate('/login')
 
+      // setSuccessMessage(response.data.message);
+      //  setTimeout(() => {
+      //   setSuccessMessage('');
+      // }, 5000);
+      // navigate('/login')
       setFormData({
         firstname: "",
         lastName: "",
@@ -121,7 +130,7 @@ function Register() {
         avatar: null,
         avatarPreview: null, 
         errors: {},
-      });
+      });}
     } catch (error) {
       if (error.response && error.response.data) {
         // Handle "email already registered" error
@@ -420,7 +429,7 @@ function Register() {
                     <div key={hobby} style={{ lineHeight: "-10px" }}>
                       <input
                         type="checkbox"
-                        className="hobbies p-1"
+                        className="hobbies p-1 m-2"
                         name="hobbiesList"
                         value={hobby}
                         checked={formData.hobbiesList.includes(hobby)}

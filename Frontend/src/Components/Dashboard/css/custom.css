@@ -797,7 +797,7 @@ background-color:rgba(0,0,0,0.09);
 			 bottom:0;
 			 z-index:10;
 			 width:260px;
-			 transform:translatex(-100%);
+			 
 			 transition:all 150ms linear;
 			 box-shadow:none!important;
 		}
@@ -821,9 +821,14 @@ background-color:rgba(0,0,0,0.09);
 	
 	
 	
+	@media only screen and (max-width:992px){
+		.home{
+			position: relative;
+			left: 120px;
+		}
+	}
 	
-	
-	
+
 	
 	
 	

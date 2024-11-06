@@ -38,7 +38,7 @@ function DashboardHome() {
 
   return (
     <>
-      <div className="container mt-5">
+      <div className="container mt-5 home">
         <div className="row justify-content-center">
           {/* Card Container */}
           <div className="col-lg-8">

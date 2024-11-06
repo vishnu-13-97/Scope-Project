@@ -45,7 +45,8 @@ function DashboardProfileEdit() {
     axios.get('http://localhost:5000/dashboard/edit-profile', { withCredentials: true })
       .then((response) => {
         const data = response.data;
-      
+       
+        
         
         const formattedDate = data.dateOfBirth ? data.dateOfBirth.split("T")[0] : ""; // Convert date to "yyyy-MM-dd"
         setFormData({
@@ -137,7 +138,8 @@ function DashboardProfileEdit() {
         },
         withCredentials: true,
       });
-  
+    console.log("Hello",formDataToSend);
+    
       
       setSuccess("Profile updated successfully!");
       setTimeout(() => {
@@ -179,7 +181,7 @@ function DashboardProfileEdit() {
 
               <div className="form-group mb-3">
                 <label htmlFor="email">Email:</label>
-                <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleInputChange} required />
+                <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleInputChange}   readOnly  required />
               </div>
 
               <div className="form-group mb-3">

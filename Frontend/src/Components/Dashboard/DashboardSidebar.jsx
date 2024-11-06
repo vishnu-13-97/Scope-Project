@@ -1,10 +1,8 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 function DashboardSidebar() {
-  const navigate = useNavigate();
-
+ 
   const handleLogout = async (e) => {
     e.preventDefault();
     console.log("Hello");
@@ -14,7 +12,7 @@ function DashboardSidebar() {
       
       if (response.data.message === 'Logged out successfully') {
         console.log('Logout successful, navigating to login...');
-        // navigate('/login');
+  
          window.location.href = '/login'
       } else {
         console.error('Logout response was unexpected:', response.data);

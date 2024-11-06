@@ -59,7 +59,7 @@ function Courses() {
     data.append('message', formData.message); 
   
     try {
-      await axios.post('http://localhost:5000/contact', data, {
+      await axios.post('http://localhost:5000/student/contact', data, {
         headers: { 'Content-Type': 'application/json' }
       });
       
@@ -143,7 +143,7 @@ function Courses() {
                 
 
 
-<div className="container" data-aos="fade-up" data-aos-delay="100">
+<div className="container" data-aos="fade-up" data-aos-delay="100" style={{marginTop:"100px"}}>
       <div className="row mb-4">
         <h3 style={{"color":"white","fontFamily":"viga"}}>Software Programming Courses</h3>
       </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function FirstTimelog() {
+
   // State to manage form steps
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
@@ -26,7 +27,7 @@ function FirstTimelog() {
     e.preventDefault();
     setEmail(prevEmail=>({...prevEmail,errors:{}}));
    try {
-    await axios.post('http://localhost:5000/send-otp',{
+  const response =   await axios.post('http://localhost:5000/student/send-otp',{
       email:email.email,
     
      }
@@ -35,8 +36,10 @@ function FirstTimelog() {
         'Content-Type':'application/json'},
          withCredentials: true
     } )
-      setIsEmailSent(true);
-      
+
+    if (response.status === 200)setIsEmailSent(true);
+    
+    
    } catch (error) {
     if (error.response && error.response.data) {
       if(error.response.data.message ==='Email not registered'){
@@ -63,7 +66,7 @@ function FirstTimelog() {
     try {
       console.log("Sending OTP:", otp.otp); // Log OTP value sent to server
 
-      const response = await axios.post('http://localhost:5000/verify-otp', {
+      const response = await axios.post('http://localhost:5000/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
       }, {
         headers: {
@@ -110,7 +113,7 @@ const handlePasswordSubmit = async (e) => {
     console.log("confirm",passwords.confirmPassword);
     
     
-      const response = await axios.post('http://localhost:5000/set-password', {
+      const response = await axios.post('http://localhost:5000/student/set-password', {
           newPassword: passwords.newPassword,
           confirmPassword: passwords.confirmPassword,
       }, {
@@ -230,7 +233,7 @@ const handlePasswordSubmit = async (e) => {
                   )}
 
                       <br />
-                      <input type="submit" value="Verify" />
+                      <input type="submit" value="Send Otp" />
                     </div>
                   )}
 
@@ -252,7 +255,7 @@ const handlePasswordSubmit = async (e) => {
                     </div>
                   )}
                       <br />
-                      <input type="submit" value="Submit OTP" />
+                      <input type="submit" value="Verify OTP" />
                     </div>
                   )}
 
