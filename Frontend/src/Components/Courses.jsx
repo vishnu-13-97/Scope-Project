@@ -59,14 +59,16 @@ function Courses() {
     data.append('message', formData.message); 
   
     try {
-      await axios.post('http://localhost:5000/student/contact', data, {
+     const response = await axios.post('http://localhost:5000/student/contact', data, {
         headers: { 'Content-Type': 'application/json' }
       });
-      
-      setSuccessMessage('Thank you for enquiring us, we will contact you shortly!');
-       setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
+
+      if (response.status === 200) {
+        setSuccessMessage(response.data.message);
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+        
   
       setFormData({
         name: "",
@@ -75,7 +77,7 @@ function Courses() {
         message: "",
         errors: {}
       });
-    
+      }
     } catch (error) {
       if (error.response) {
         if (error.response.data && error.response.data.errors) {

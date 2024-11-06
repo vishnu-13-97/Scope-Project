@@ -22,7 +22,7 @@ router.post('/contact', async (req, res) => {
      await newContact.save();
      const info = await sendMail(email, subject, message);
      console.log("Message sent:", info.response);
-     return res.json({ message: `Mail sent successfully to ${email}` });
+     return res.json({ message: `Thank you for enquiry we will contact you shortly!` });
   } catch (error) {
      console.error("Error processing request:", error);
      res.status(500).json({ message: 'Error processing request' });

@@ -42,7 +42,7 @@ function Contact() {
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);
-           navigate('/contact')
+        
         setFormData({
           name: "",
           email: "",
