@@ -64,7 +64,7 @@ function FirstTimelog() {
     setOtp(prevOtp => ({...prevOtp, errors: {}}));
 
     try {
-      console.log("Sending OTP:", otp.otp); // Log OTP value sent to server
+   
 
       const response = await axios.post('http://localhost:5000/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
@@ -75,14 +75,13 @@ function FirstTimelog() {
         
       });
 
-      console.log("Response data:", response.data); // Log response from server
+      // Log response from server
 
       setIsOtpVerified(true);
 
     } catch (error) {
       if (error.response && error.response.data) {
-        console.log("Error response data:", error.response.data); // Log error response
-
+    
         if (error.response.data.error === 'Invalid OTP') {
           setOtp((prevOtp) => ({
             ...prevOtp, errors: { otp: 'Invalid OTP' }
@@ -109,8 +108,7 @@ const handlePasswordSubmit = async (e) => {
   setPasswords(prevPasswords => ({ ...prevPasswords, errors: {} }));
   
   try {
-    console.log("password",passwords.newPassword);
-    console.log("confirm",passwords.confirmPassword);
+  
     
     
       const response = await axios.post('http://localhost:5000/student/set-password', {
@@ -139,7 +137,6 @@ const handlePasswordSubmit = async (e) => {
       }
   } catch (error) {
       if (error.response && error.response.data) {
-          console.log('Error response data:', error.response.data);
 
           // Handle specific errors returned from the backend
           if (error.response.data.error === 'Passwords do not match') {

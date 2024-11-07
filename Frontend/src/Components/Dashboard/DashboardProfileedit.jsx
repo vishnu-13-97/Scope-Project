@@ -138,7 +138,7 @@ function DashboardProfileEdit() {
         },
         withCredentials: true,
       });
-    console.log("Hello",formDataToSend);
+   
     
       
       setSuccess("Profile updated successfully!");

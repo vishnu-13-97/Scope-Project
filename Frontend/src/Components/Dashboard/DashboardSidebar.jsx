@@ -5,13 +5,13 @@ function DashboardSidebar() {
  
   const handleLogout = async (e) => {
     e.preventDefault();
-    console.log("Hello");
+
 
     try {
       const response = await axios.post('http://localhost:5000/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
       
       if (response.data.message === 'Logged out successfully') {
-        console.log('Logout successful, navigating to login...');
+ 
   
          window.location.href = '/login'
       } else {

@@ -13,7 +13,7 @@ const Frontend = () => {
         withCredentials: true, // Send cookies with the request (for authentication)
       })
       .then((response) => {
-        console.log(response.data); // Log to inspect the structure of the response
+      
         
         // If your data is directly in response.data (not in profiles), you may need to adjust this
         setData(response.data || []); // Fallback to an empty array if response.data is undefined

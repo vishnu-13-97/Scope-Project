@@ -120,14 +120,14 @@ router.get('/edit-profile',authenticateJWT,async(req,res)=>{
        
         
         const updateData = { name, lastName, gender, email, phone,dateOfBirth, country, state, city, hobbies,avatar };
-        // console.log(updateData);
+       
         
       
         if (typeof req.body.hobbies === 'string') {
           req.body.hobbies = JSON.parse(req.body.hobbies);
         }
       
-        console.log("Parsed hobbies:", req.body.hobbies); // Check if hobbies is an array
+ 
       
   
         if (req.file) {
@@ -138,7 +138,7 @@ router.get('/edit-profile',authenticateJWT,async(req,res)=>{
         
   
         const updatedUser = await studentmodel.findByIdAndUpdate(userId, updateData, { new: true });
-        console.log(updatedUser);
+       
         
   
         if (!updatedUser) {
@@ -188,8 +188,8 @@ router.get('/edit-profile',authenticateJWT,async(req,res)=>{
 
 
   router.post('/add-course', authenticateJWT, async (req, res) => {
-    const studentId = req.user.id; // Get the student ID from the JWT
-    const { courseId } = req.body; // Get the course ID from the request body
+    const studentId = req.user.id; 
+    const { courseId } = req.body;
 
     try {
         // Find the course by its ID
@@ -244,7 +244,7 @@ router.post('/logout', (req, res) => {
       }
   
 
-      console.log('Session destroyed, clearing cookies...');
+
       
      
       res.clearCookie('token');

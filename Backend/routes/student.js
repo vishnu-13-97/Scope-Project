@@ -110,7 +110,7 @@ router.post("/send-otp", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Email not registered" });
     }
-    console.log("User found, proceeding to generate OTP");
+  
 
     // Generate OTP and set expiry
     const otp = Math.floor(1000000 + Math.random() * 9000000).toString();
@@ -176,7 +176,7 @@ router.post("/verify-otp", (req, res) => {
 });
 
 router.post("/set-password", async (req, res) => {
-  console.log("Received body:", req.body);
+
   try {
     const { newPassword, confirmPassword } = req.body;
 

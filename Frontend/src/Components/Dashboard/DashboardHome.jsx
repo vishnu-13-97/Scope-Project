@@ -12,7 +12,7 @@ function DashboardHome() {
         withCredentials: true, 
       })
       .then((response) => {
-        console.log("data is ", response.data);
+  
         setData(Array.isArray(response.data) ? response.data : [response.data]);
         setLoading(false);
       })

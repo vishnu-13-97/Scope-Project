@@ -193,9 +193,9 @@ function Contact() {
         ></textarea>
 
         {successMessage && (
-          <h3 className="alert alert-success" style={{ fontFamily: "poppins" }} role="alert">
+          <p className="alert alert-success" style={{ fontFamily: "poppins" }} role="alert">
             {successMessage}
-          </h3>
+          </p>
         )}
 
         <input type="submit" className="btn btn-primary mt-2" value={"Send Message"} />

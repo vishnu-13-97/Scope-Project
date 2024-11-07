@@ -31,7 +31,7 @@ function DashboardMainContent() {
                 { withCredentials: true } // Include credentials for authentication
             );
             setEnrollmentSuccess(`Successfully enrolled in ${response.data.courseName}`);
-            console.log(response.data);
+        
         } catch (error) {
             console.error('Error enrolling in course:', error);
             setEnrollmentSuccess('Failed to enroll in course');
