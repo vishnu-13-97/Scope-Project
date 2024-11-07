@@ -19,6 +19,7 @@ pids
 lib-cov/
 coverage/
 
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -32,6 +33,7 @@ jspm_packages/
 # Project build files
 /dist/
 /build/
+/uploads
 
 # IDE/editor specific files
 .vscode/
