@@ -6,7 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 app.use(express.json());
-const mongodbUrl = `mongodb+srv://user:user@mongodbtrial.3w9nzbg.mongodb.net/?retryWrites=true&w=majority&appName=mongodbtrial`
+const mongodbUrl = process.env.MONGO_URI
 const path = require('path');
 path.join(__dirname, 'uploads');
 app.use('/uploads', express.static('uploads'));
