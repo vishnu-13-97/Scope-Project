@@ -10,7 +10,7 @@ function DashboardMainContent() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/dashboard/courses', { withCredentials: true });
+                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', { withCredentials: true });
                 setCourses(response.data); 
             } catch (err) {
                 setError('Error fetching courses');
@@ -26,7 +26,7 @@ function DashboardMainContent() {
     const handleEnroll = async (courseId) => {
         try {
             const response = await axios.post(
-                'http://localhost:5000/dashboard/add-course',
+                'https://scope-project-backend.onrender.com/dashboard/add-course',
                 { courseId },
                 { withCredentials: true } // Include credentials for authentication
             );
@@ -97,19 +97,6 @@ function DashboardMainContent() {
                             </tbody>
                         </table>
 
-                        {/* Pagination (uncomment if needed) */}
-                        {/* <div className="clearfix">
-                            <div className="hint-text">Showing <b>5</b> out of <b>25</b></div>
-                            <ul className="pagination">
-                                <li className="page-item disabled"><a href="/">Previous</a></li>
-                                <li className="page-item active"><a href="/" className="page-link">1</a></li>
-                                <li className="page-item"><a href="/" className="page-link">2</a></li>
-                                <li className="page-item"><a href="/" className="page-link">3</a></li>
-                                <li className="page-item"><a href="/" className="page-link">4</a></li>
-                                <li className="page-item"><a href="/" className="page-link">5</a></li>
-                                <li className="page-item"><a href="/" className="page-link">Next</a></li>
-                            </ul>
-                        </div> */}
 
                     </div>
                 </div>
