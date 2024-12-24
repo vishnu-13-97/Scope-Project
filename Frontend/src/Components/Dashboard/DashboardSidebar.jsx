@@ -8,7 +8,7 @@ function DashboardSidebar() {
 
 
     try {
-      const response = await axios.post('http://localhost:5000/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
+      const response = await axios.post('https://scope-project-backend.onrender.com/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
       
       if (response.data.message === 'Logged out successfully') {
  
