@@ -65,7 +65,7 @@ function FirstTimelog() {
 
     try {
    
- await axios.post('http://localhost:5000/student/verify-otp', {
+ await axios.post('https://scope-project-backend.onrender.com/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
       }, {
         headers: {
@@ -110,7 +110,7 @@ const handlePasswordSubmit = async (e) => {
   
     
     
-      const response = await axios.post('http://localhost:5000/student/set-password', {
+      const response = await axios.post('https://scope-project-backend.onrender.com/student/set-password', {
           newPassword: passwords.newPassword,
           confirmPassword: passwords.confirmPassword,
       }, {
