@@ -65,8 +65,7 @@ function FirstTimelog() {
 
     try {
    
-
-      const response = await axios.post('http://localhost:5000/student/verify-otp', {
+ await axios.post('http://localhost:5000/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
       }, {
         headers: {

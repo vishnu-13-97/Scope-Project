@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 
 function Contact() {
-  const navigate = useNavigate();
+
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
     name: "",
