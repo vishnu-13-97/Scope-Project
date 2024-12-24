@@ -27,7 +27,7 @@ function FirstTimelog() {
     e.preventDefault();
     setEmail(prevEmail=>({...prevEmail,errors:{}}));
    try {
-  const response =   await axios.post('http://localhost:5000/student/send-otp',{
+  const response =   await axios.post('https://scope-project-backend.onrender.com/student/send-otp',{
       email:email.email,
     
      }
