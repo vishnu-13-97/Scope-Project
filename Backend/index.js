@@ -29,7 +29,7 @@ app.use(session({
 }));
 
 app.use(cors({
-  origin:'https://scope-project-frontend.onrender.com' || 'http://localhost:3000', 
+  origin:https:'//scope-project-backend.onrender.com' || 'http://localhost:3000', 
   credentials: true 
 }));
 
