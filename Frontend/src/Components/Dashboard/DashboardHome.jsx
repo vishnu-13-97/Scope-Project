@@ -8,7 +8,7 @@ function DashboardHome() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/dashboard', {
+      .get('https://scope-project-backend.onrender.com/dashboard', {
         withCredentials: true, 
       })
       .then((response) => {
@@ -52,7 +52,7 @@ function DashboardHome() {
                       {/* Profile Photo Section */}
                       <div className="col-md-4 text-center mb-3 mb-md-0">
                         <img
-                          src={item.avatar ? `http://localhost:5000/${item.avatar}` : 'https://via.placeholder.com/150'}
+                          src={item.avatar ? `https://scope-project-backend.onrender.com/${item.avatar}` : 'https://via.placeholder.com/150'}
                           alt="Profile"
                           className="img-fluid rounded-circle shadow"
                           style={{ width: '150px', height: '150px' }}
