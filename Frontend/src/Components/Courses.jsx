@@ -59,7 +59,7 @@ function Courses() {
     data.append('message', formData.message); 
   
     try {
-     const response = await axios.post('http://localhost:5000/student/contact', data, {
+     const response = await axios.post('https://scope-project-backend.onrender.com/student/contact', data, {
         headers: { 'Content-Type': 'application/json' }
       });
 
