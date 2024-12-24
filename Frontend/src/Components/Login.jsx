@@ -31,7 +31,7 @@ function Login() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/student/login', { withCredentials: true });
+        const response = await axios.get('https://scope-project-backend.onrender.com/student/login', { withCredentials: true });
         if (response.status === 200 && response.data.user) {
           navigate('/dashboard');
         }
@@ -55,7 +55,7 @@ function Login() {
     setUser(prevUser =>({...prevUser,errors:{}}));
     setRememberMe(prevRememberme =>({...prevRememberme,errors:{}}));
     try {
-       await axios.post('http://localhost:5000/student/login', {
+       await axios.post('https://scope-project-backend.onrender.com/student/login', {
         email: user.username,
         password: user.password,
         rememberMe:rememberMe
