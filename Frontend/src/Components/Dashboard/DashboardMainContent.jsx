@@ -10,7 +10,8 @@ function DashboardMainContent() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', { withCredentials: true });
+                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', { withCredentials: true,
+                                                                                                                 'Authorization': `Bearer ${token}`});
                 setCourses(response.data); 
             } catch (err) {
                 setError('Error fetching courses');
