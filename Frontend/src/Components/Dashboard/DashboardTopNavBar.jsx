@@ -9,7 +9,8 @@ function DashboardTopNavBar() {
   useEffect(() => {
     axios
       .get('https://scope-project-backend.onrender.com/dashboard', {
-        withCredentials: true, // Send cookies with the request (for authentication)
+        withCredentials: true,
+        'Authorization': `Bearer ${token}`// Send cookies with the request (for authentication)
       })
       .then((response) => {
         // Check the full response structure
