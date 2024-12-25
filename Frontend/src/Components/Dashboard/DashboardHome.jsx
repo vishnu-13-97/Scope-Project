@@ -9,7 +9,8 @@ function DashboardHome() {
   useEffect(() => {
     axios
       .get('https://scope-project-backend.onrender.com/dashboard', {
-        withCredentials: true, 
+        withCredentials: true,
+        'Authorization': `Bearer ${token}`
       })
       .then((response) => {
   
