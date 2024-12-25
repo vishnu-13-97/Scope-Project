@@ -42,7 +42,7 @@ function DashboardProfileEdit() {
   const [citiesList, setCitiesList] = useState([]);
 
   useEffect(() => {
-    axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', { withCredentials: true })
+    axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', { withCredentials: true , 'Authorization': `Bearer ${token}`})
       .then((response) => {
         const data = response.data;
        
@@ -135,6 +135,7 @@ function DashboardProfileEdit() {
       await axios.put("https://scope-project-backend.onrender.com/dashboard/update-profile", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${token}`
         },
         withCredentials: true,
       });
