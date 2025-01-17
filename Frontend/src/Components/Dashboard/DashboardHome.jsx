@@ -30,8 +30,7 @@ function DashboardHome() {
       setError(error); // Set error state
       setLoading(false); // Stop loading even if there's an error
     });
-}, []); // Dependency array ensures this runs only once
-pendency array ensures it runs only once (on component mount)
+}, []); 
 
   // Centering styles for loading and error messages
   const centeredMessageStyle = {
