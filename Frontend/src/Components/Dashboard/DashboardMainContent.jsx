@@ -10,6 +10,13 @@ function DashboardMainContent() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
+                 const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+  if (!token) {
+    console.error('Token not found');
+    return; 
+  }
+
                 const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', { withCredentials: true,
                                                                                                                  'Authorization': `Bearer ${token}`});
                 setCourses(response.data); 
