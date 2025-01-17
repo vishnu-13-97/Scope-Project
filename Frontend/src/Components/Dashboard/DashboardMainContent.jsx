@@ -17,8 +17,11 @@ function DashboardMainContent() {
     return; 
   }
 
-                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', { withCredentials: true,
-                                                                                                                 'Authorization': `Bearer ${token}`});
+                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', {
+  withCredentials: true,
+  headers: { 'Authorization': `Bearer ${token}` },
+})
+
                 setCourses(response.data); 
             } catch (err) {
                 setError('Error fetching courses');
