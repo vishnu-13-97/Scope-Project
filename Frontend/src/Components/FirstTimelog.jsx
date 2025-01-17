@@ -66,7 +66,7 @@ console.log("OTP being sent:", otp.otp);
     try {
    
  await axios.post('https://scope-project-backend.onrender.com/student/verify-otp', {
-        otp: otp.otp // Ensure this holds the correct value
+        otp: otp.otp.trim() // Ensure this holds the correct value
    
 
       }, {
