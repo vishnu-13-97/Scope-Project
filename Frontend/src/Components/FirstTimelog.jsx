@@ -62,12 +62,12 @@ function FirstTimelog() {
   const handleOTPSubmit = async(e) => {
     e.preventDefault();
     setOtp(prevOtp => ({...prevOtp, errors: {}}));
-
+console.log("OTP being sent:", otp.otp);
     try {
    
  await axios.post('https://scope-project-backend.onrender.com/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
-   console.log("OTP being sent:", otp.otp);
+   
 
       }, {
         headers: {
