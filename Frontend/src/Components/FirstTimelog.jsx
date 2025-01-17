@@ -81,8 +81,10 @@ function FirstTimelog() {
     } catch (error) {
       console.log(error)
       if (error.response && error.response.data) {
-    
+     console.log(error.response);
+         console.log(error.response.data)
         if (error.response.data.error === 'Invalid OTP') {
+           console.log(error.response.data.error)
           setOtp((prevOtp) => ({
             ...prevOtp, errors: { otp: 'Invalid OTP' }
           }));
