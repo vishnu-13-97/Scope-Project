@@ -67,6 +67,8 @@ function FirstTimelog() {
    
  await axios.post('https://scope-project-backend.onrender.com/student/verify-otp', {
         otp: otp.otp // Ensure this holds the correct value
+   console.log("OTP being sent:", otp.otp);
+
       }, {
         headers: {
           'Content-Type': 'application/json'},
