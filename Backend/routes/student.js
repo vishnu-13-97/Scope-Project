@@ -113,7 +113,8 @@ router.post("/send-otp", async (req, res) => {
   
 
     // Generate OTP and set expiry
-    const otp = Math.floor(1000000 + Math.random() * 9000000).toString();
+     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
     req.session.otp = otp;
     req.session.otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
     req.session.email = email;
