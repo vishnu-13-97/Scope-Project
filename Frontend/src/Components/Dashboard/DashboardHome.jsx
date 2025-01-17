@@ -6,23 +6,32 @@ function DashboardHome() {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
-  useEffect(() => {
-    axios
-      .get('https://scope-project-backend.onrender.com/dashboard', {
-        withCredentials: true,
-        'Authorization': `Bearer ${token}`
-      })
-      .then((response) => {
-  
-        setData(Array.isArray(response.data) ? response.data : [response.data]);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error); // Log error for debugging
-        setError(error); // Set error state
-        setLoading(false); // Stop loading even if there's an error
-      });
-  }, []); // Empty dependency array ensures it runs only once (on component mount)
+ useEffect(() => {
+  const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+  if (!token) {
+    console.error('Token not found');
+    return; // Exit if no token
+  }
+
+  axios
+    .get('https://scope-project-backend.onrender.com/dashboard', {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the headers
+      },
+    })
+    .then((response) => {
+      setData(Array.isArray(response.data) ? response.data : [response.data]);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error); // Log error for debugging
+      setError(error); // Set error state
+      setLoading(false); // Stop loading even if there's an error
+    });
+}, []); // Dependency array ensures this runs only once
+pendency array ensures it runs only once (on component mount)
 
   // Centering styles for loading and error messages
   const centeredMessageStyle = {
