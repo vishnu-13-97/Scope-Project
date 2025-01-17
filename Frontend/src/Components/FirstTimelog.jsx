@@ -79,6 +79,7 @@ function FirstTimelog() {
       setIsOtpVerified(true);
 
     } catch (error) {
+      console.log(error)
       if (error.response && error.response.data) {
     
         if (error.response.data.error === 'Invalid OTP') {
