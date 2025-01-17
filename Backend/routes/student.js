@@ -118,6 +118,7 @@ router.post("/send-otp", async (req, res) => {
     req.session.otp = otp;
     req.session.otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
     req.session.email = email;
+console.log("Session data in send-otp:", req.session);
 
     console.log("OTP generated:", otp); // For debugging
 
@@ -140,8 +141,10 @@ router.post("/send-otp", async (req, res) => {
 
 router.post("/verify-otp", (req, res) => {
   const { otp } = req.body;
-  
+  console.log(req.body);
   try {
+    console.log("Session data in verify-otp:", req.session);
+
     // Check if OTP exists in the session
     if (!req.session.otp) {
       console.log("No OTP stored in session");
