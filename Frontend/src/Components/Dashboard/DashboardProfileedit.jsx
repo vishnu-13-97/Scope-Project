@@ -42,6 +42,13 @@ function DashboardProfileEdit() {
   const [citiesList, setCitiesList] = useState([]);
 
   useEffect(() => {
+     const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+  if (!token) {
+    console.error('Token not found');
+    return; // Exit if no token
+  }
+
     axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', { withCredentials: true , 'Authorization': `Bearer ${token}`})
       .then((response) => {
         const data = response.data;
@@ -132,6 +139,13 @@ function DashboardProfileEdit() {
     });
   
     try {
+       const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+  if (!token) {
+    console.error('Token not found');
+    return; // Exit if no token
+  }
+
       await axios.put("https://scope-project-backend.onrender.com/dashboard/update-profile", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
