@@ -49,7 +49,11 @@ function DashboardProfileEdit() {
     return; // Exit if no token
   }
 
-    axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', { withCredentials: true , 'Authorization': `Bearer ${token}`})
+   axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', {
+  withCredentials: true,
+  headers: { 'Authorization': `Bearer ${token}` },
+})
+
       .then((response) => {
         const data = response.data;
        
