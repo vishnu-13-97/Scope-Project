@@ -150,7 +150,7 @@ function DashboardProfileEdit() {
     return; // Exit if no token
   }
 
-      await axios.put("https://scope-project-backend.onrender.com/dashboard", formDataToSend, {
+      await axios.put("https://scope-project-backend.onrender.com", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           'Authorization': `Bearer ${token}`
