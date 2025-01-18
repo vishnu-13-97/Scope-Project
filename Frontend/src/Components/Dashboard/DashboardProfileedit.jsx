@@ -49,7 +49,7 @@ function DashboardProfileEdit() {
     return; // Exit if no token
   }
 
-   axios.get('https://scope-project-backend.onrender.com', {
+   axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', {
   withCredentials: true,
   headers: { 'Authorization': `Bearer ${token}` },
 })
@@ -150,7 +150,7 @@ function DashboardProfileEdit() {
     return; // Exit if no token
   }
 
-      await axios.put("https://scope-project-backend.onrender.com", formDataToSend, {
+      await axios.put("https://scope-project-backend.onrender.com/dashboard/update-profile", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           'Authorization': `Bearer ${token}`
