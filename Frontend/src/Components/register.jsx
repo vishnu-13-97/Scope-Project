@@ -98,7 +98,7 @@ function Register() {
   });
   
     try {
-    const response =  await axios.post("https://scope-project-backend.onrender.com", data, {
+    const response =  await axios.post("https://scope-project-backend.onrender.com/student/register", data, {
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
