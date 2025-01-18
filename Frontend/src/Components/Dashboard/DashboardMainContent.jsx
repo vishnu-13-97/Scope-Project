@@ -17,7 +17,7 @@ function DashboardMainContent() {
     return; 
   }
 
-                const response = await axios.get('https://scope-project-backend.onrender.com', {
+                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', {
   withCredentials: true,
   headers: { 'Authorization': `Bearer ${token}` },
 })
@@ -37,7 +37,7 @@ function DashboardMainContent() {
     const handleEnroll = async (courseId) => {
         try {
             const response = await axios.post(
-                'https://scope-project-backend.onrender.com',
+                'https://scope-project-backend.onrender.com/dashboard/add-course',
                 { courseId },
                 { withCredentials: true } // Include credentials for authentication
             );
