@@ -15,7 +15,7 @@ function DashboardHome() {
   }
 
   axios
-    .get('https://scope-project-backend.onrender.com', {
+    .get('https://scope-project-backend.onrender.com/dashboard', {
       withCredentials: true,
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token in the headers
