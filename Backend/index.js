@@ -17,12 +17,12 @@ app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_PASS,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: mongodbUrl , ttl: 14 * 24 * 60 * 60}),
     cookie: {
       secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
          path: '/',
         maxAge: 10 * 60 * 1000 // 10 minutes
     }
