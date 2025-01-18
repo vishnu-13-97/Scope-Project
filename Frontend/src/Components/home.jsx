@@ -35,7 +35,7 @@ function Home() {
     data.append("message", formData.message); // Change 'text' to 'message'
 
     try {
-      await axios.post("http://localhost:5000/contact", data, {
+      await axios.post("https://scope-project-backend.onrender.com", data, {
         headers: { "Content-Type": "application/json" },
       });
 
