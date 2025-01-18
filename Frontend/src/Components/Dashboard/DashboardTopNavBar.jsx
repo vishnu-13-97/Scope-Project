@@ -8,7 +8,7 @@ function DashboardTopNavBar() {
 
   useEffect(() => {
     axios
-      .get('https://scope-project-backend.onrender.com/dashboard', {
+      .get('https://scope-project-backend.onrender.com', {
         withCredentials: true,
         })
       .then((response) => {
