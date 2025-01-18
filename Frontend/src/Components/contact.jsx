@@ -33,7 +33,7 @@ function Contact() {
     data.append('message', formData.message); 
 
     try {
-      const response = await axios.post('https://scope-project-backend.onrender.com/student/contact', data, {
+      const response = await axios.post('https://scope-project-backend.onrender.com', data, {
         headers: { 'Content-Type': 'application/json' },
       });
 
