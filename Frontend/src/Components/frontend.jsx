@@ -9,7 +9,7 @@ const Frontend = () => {
   useEffect(() => {
     // Fetch the protected data when the component mounts
     axios
-      .get('https://scope-project-backend.onrender.com', {
+      .get('https://scope-project-backend.onrender.com/protected', {
         withCredentials: true, // Send cookies with the request (for authentication)
       })
       .then((response) => {
