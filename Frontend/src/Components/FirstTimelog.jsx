@@ -27,7 +27,7 @@ function FirstTimelog() {
     e.preventDefault();
     setEmail(prevEmail=>({...prevEmail,errors:{}}));
    try {
-  const response =   await axios.post('https://scope-project-backend.onrender.com/student/send-otp',{
+  const response =   await axios.post('https://scope-project-backend.onrender.com',{
       email:email.email,
     
      }
@@ -65,7 +65,7 @@ function FirstTimelog() {
 console.log("OTP being sent:", otp.otp);
     try {
    
- await axios.post('https://scope-project-backend.onrender.com/student/verify-otp', {
+ await axios.post('https://scope-project-backend.onrender.com', {
         otp: otp.otp.trim() // Ensure this holds the correct value
    
 
