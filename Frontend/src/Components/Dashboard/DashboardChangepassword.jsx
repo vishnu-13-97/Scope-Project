@@ -28,7 +28,7 @@ function DashboardChangepassword() {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('https://scope-project-backend.onrender.com/dashboard/changepassword', {
+      const response = await axios.post('https://scope-project-backend.onrender.com', {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
         confirmPassword: formData.confirmPassword
