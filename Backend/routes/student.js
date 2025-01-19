@@ -251,14 +251,15 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get('/login',authenticateJWT,(req,res)=>{
+router.get('/login', authenticateJWT, (req, res) => {
   const user = req.user;
   
   if (user) {
     return res.status(200).json({ message: 'User already logged in', user });
-}
-  })
-
+  } else {
+    return res.status(401).json({ message: 'User not logged in' });
+  }
+});
 
 
   
