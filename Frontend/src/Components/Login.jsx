@@ -67,6 +67,7 @@ function Login() {
 
       if (response.status === 200) {
         // Save token to localStorage
+        console.log(response.data);
         localStorage.setItem('authToken', response.data.token);
         navigate('/dashboard');
       }
