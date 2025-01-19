@@ -8,7 +8,7 @@ function DashboardHome() {
 
  useEffect(() => {
   const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
-
+console.log('Retrieved token:', token);
   if (!token) {
     console.error('Token not found');
     return; // Exit if no token
