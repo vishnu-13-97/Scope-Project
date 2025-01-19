@@ -33,27 +33,27 @@ function DashboardSidebar() {
       </div>
       <ul className="list-unstyled component m-0 mt-4">
       <li className="active">
-          <a href="/dashboard/" className="dashboard">
+          <a href="https://scope-project-backend.onrender.com/dashboard/" className="dashboard">
             <i className="material-icons">account_circle</i>Profile
           </a>
         </li>
         <li className="active">
-          <a href="/dashboard/selectcourses" className="dashboard">
+          <a href="https://scope-project-backend.onrender.com/dashboard/selectcourses" className="dashboard">
             <i className="material-icons">book</i>Select Course
           </a>
         </li>
         <li className="active">
-          <a href="/dashboard/changepassword" className="dashboard">
+          <a href="https://scope-project-backend.onrender.com/dashboard/changepassword" className="dashboard">
             <i className="material-icons">lock</i>Change Password
           </a>
         </li>
         <li className="active">
-          <a href="/dashboard/editProfile" className="dashboard">
+          <a href="https://scope-project-backend.onrender.com/dashboard/editProfile" className="dashboard">
             <i className="material-icons">edit</i>Edit Profile
           </a>
         </li>
         <li className="active">
-          <a href="/login" className="dashboard" onClick={handleLogout}>
+          <a href="https://scope-project-backend.onrender.com/login" className="dashboard" onClick={handleLogout}>
             <i className="material-icons">logout</i>Logout
           </a>
         </li>
