@@ -8,7 +8,9 @@ function authenticateJWT(req, res, next) {
     if (!token) return res.status(401).json({ message: 'Access token is missing' });
     
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Token is invalid' });
+        if (err)
+                 console.error("JWT Verification Error:", err.message);
+            return res.status(403).json({ message: 'Token is invalid' });
 
         req.user = user;
         // Set session user data if not already set
