@@ -28,7 +28,13 @@ function Login() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('https://scope-project-backend.onrender.com/student/login', { withCredentials: true });
+        const response = await axios.get('https://scope-project-backend.onrender.com/student/login', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+  withCredentials: true,  // This is necessary if the token is in cookies
+});
+
         if (response.status === 200 && response.data.user) {
           navigate('/dashboard');
         }
