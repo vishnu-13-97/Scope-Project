@@ -216,31 +216,40 @@ router.post("/set-password", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password, rememberMe } = req.body;
+
   try {
     const user = await studentmodel.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
+
     const token = jwt.sign(
       { id: user._id, username: user.name, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: rememberMe ? "7d" : "1h" }
     );
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 1 * 60 * 60 * 1000,
       sameSite: "lax",
     });
+
     req.session.user = { id: user.id, username: user.name };
-    res.status(200).json({ message: "Login successful" });
+
+    // Include token in the response body
+    res.status(200).json({
+      message: "Login successful",
+      token, // Add the token here
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 router.get('/login',authenticateJWT,(req,res)=>{
   const user = req.user;
