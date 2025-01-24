@@ -18,7 +18,7 @@ console.log('Retrieved token:', token);
     .get('https://scope-project-backend.onrender.com/dashboard', {
       withCredentials: true,
       headers: {
-        'Authorization': `Bearer ${data.token}`, // Include the token in the headers
+        'Authorization': `Bearer ${token}`, // Include the token in the headers
       },
     })
     .then((response) => {
