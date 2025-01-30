@@ -1,4 +1,5 @@
-# ![Scope India Logo](https://your-logo-url.com/logo.png) Scope India Educational Website
+# ![Scope India Logo](https://github.com/vishnu-13-97/Scope-Project/blob/main/Frontend/public/assets/scope%20Images/scope-india-logo-home-page.png) 
+Scope India Educational Website
 
 ## Overview
 This is a web-based educational platform built for Scope India, allowing users to browse and enroll in various courses. The website is developed using React.js, Bootstrap CSS, Express.js, and MongoDB, offering a dynamic and interactive experience for students.
