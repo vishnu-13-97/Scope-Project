@@ -1,72 +1,63 @@
 const express = require("express");
 const app = express();
-const session = require('express-session');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const MongoStore = require('connect-mongo');
-const StudentRouter = require('./routes/student');
-const DashboardRouter = require('./routes/dashboard');
+const StudentRouter = require("./routes/student");
+const DashboardRouter = require("./routes/dashboard");
 
 const mongodbUrl = process.env.MONGO_URI;
 
-// Middleware configuration
+// Middleware Configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Serve static files
-const path = require('path');
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Trust proxy for Render's reverse proxy
+app.set("trust proxy", 1);
 
-// Enable trust proxy for secure cookies on Render
-app.set('trust proxy', 1);
-
-// CORS middleware
+// CORS Configuration
 app.use(
   cors({
-    origin: 'https://scope-project-frontend.onrender.com', // Replace with your frontend domain
-    credentials: true, // Allow cookies to be sent
+    origin: "https://scope-project-frontend.onrender.com", // Frontend URL (no trailing /)
+    credentials: true, // Allow cookies
   })
 );
 
-// Session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_PASS,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: mongodbUrl,
-      ttl: 14 * 24 * 60 * 60, // 14 days in seconds
-    }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // Send cookies only over HTTPS in production
-      httpOnly: true, // Prevent client-side JavaScript access
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Cross-origin compatibility
-      path: '/', // Root path
-      maxAge: 10 * 60 * 1000, // 10 minutes
-    },
-  })
-);
+// Serve static files
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routers
-app.use('/dashboard', DashboardRouter);
-app.use('/student', StudentRouter);
+// JWT Authentication Middleware (Add this to protected routes)
+// const authenticateJWT = (req, res, next) => {
+//   const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+  
+//   if (!token) {
+//     return res.status(403).json({ error: "Authentication required" });
+//   }
 
-// Connect to MongoDB
+//   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+//     if (err) {
+//       return res.status(403).json({ error: "Invalid or expired token" });
+//     }
+//     req.user = user;
+//     next();
+//   });
+// };
+
+// Routes
+app.use("/student", StudentRouter);
+app.use("/dashboard", authenticateJWT, DashboardRouter); // Protected route
+
+// MongoDB Connection
 mongoose
   .connect(mongodbUrl)
-  .then(() => {
-    console.log("Database connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server listening on PORT ${process.env.PORT}`);
-});
+// Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
