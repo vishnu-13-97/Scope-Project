@@ -50,7 +50,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/student", StudentRouter);
-app.use("/dashboard", authenticateJWT, DashboardRouter); // Protected route
+app.use("/dashboard", DashboardRouter); // Protected route
 
 // MongoDB Connection
 mongoose
