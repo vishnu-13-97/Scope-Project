@@ -218,33 +218,35 @@ router.post("/login", async (req, res) => {
   const { email, password, rememberMe } = req.body;
 
   try {
+    // 1. Find user
     const user = await studentmodel.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
+    // 2. Verify password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
+    // 3. Create JWT token
     const token = jwt.sign(
       { id: user._id, username: user.name, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: rememberMe ? "7d" : "1h" }
     );
 
+    // 4. Set HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", // HTTPS only
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 1 * 60 * 60 * 1000,
-      sameSite: "lax",
     });
 
-    req.session.user = { id: user.id, username: user.name };
-
-    // Include token in the response body
+    // 5. Send response (remove session-related code)
     res.status(200).json({
       message: "Login successful",
-      token, // Add the token here
+      user: { id: user._id, username: user.name, email: user.email }
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
