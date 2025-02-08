@@ -76,7 +76,7 @@ router.get('/', authenticateJWT, async (req, res) => {
      res.clearCookie('connect.sid', {
        path: '/',
        httpOnly: true,
-       secure: false, // Adjust based on environment (false for localhost, true for production https)
+       secure: true, // Adjust based on environment (false for localhost, true for production https)
        sameSite: 'Lax'
      });
   
