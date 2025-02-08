@@ -29,9 +29,7 @@ function Login() {
     const checkLoginStatus = async () => {
       try {
         const response = await axios.get('https://scope-project-backend.onrender.com/student/login', {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  },
+
   withCredentials: true,  // This is necessary if the token is in cookies
 });
 
