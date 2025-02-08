@@ -6,20 +6,17 @@ function DashboardHome() {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
- useEffect(() => {
-  const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
-console.log('Retrieved token:', token);
-  if (!token) {
-    console.error('Token not found');
-    return; // Exit if no token
-  }
+//  useEffect(() => {
+//   const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+// console.log('Retrieved token:', token);
+//   if (!token) {
+//     console.error('Token not found');
+//     return; // Exit if no token
+//   }
 
   axios
     .get('https://scope-project-backend.onrender.com/dashboard', {
       withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${token}`, // Include the token in the headers
-      },
     })
     .then((response) => {
       setData(Array.isArray(response.data) ? response.data : [response.data]);
