@@ -4,22 +4,33 @@ import { useNavigate } from 'react-router-dom';
 function DashboardSidebar() {
   const navigate = useNavigate();
 
-  const handleLogout = async (e) => {
-    e.preventDefault();
+ const handleLogout = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await axios.post('https://scope-project-backend.onrender.com/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
+  try {
+    const response = await axios.post('https://scope-project-backend.onrender.com/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
 
-      if (response.data.message === 'Logged out successfully') {
-        navigate('/login');
-      } else {
-        console.error('Unexpected logout response:', response.data);
-      }
-    } catch (error) {
-      console.error('Error logging out:', error);
+    if (response.data.message === 'Logged out successfully') {
+      navigate('/login');
+    } else {
+      console.error('Unexpected logout response:', response.data);
     }
-  };
-
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code outside the range of 2xx
+      console.error('Error response data:', error.response.data);
+      console.error('Error response status:', error.response.status);
+      console.error('Error response headers:', error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('Error request data:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error message:', error.message);
+    }
+    console.error('Error config:', error.config);
+  }
+};
   return (
     <div id="sidebar">
       <div className="sidebar-header">
