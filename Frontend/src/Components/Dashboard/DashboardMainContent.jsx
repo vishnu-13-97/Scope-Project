@@ -7,19 +7,19 @@ function DashboardMainContent() {
     const [loading, setLoading] = useState(true);
     const [enrollmentSuccess, setEnrollmentSuccess] = useState(null); // To track enrollment success message
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                 const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+  //   useEffect(() => {
+  //       const fetchCourses = async () => {
+  //           try {
+  //                const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
 
-  if (!token) {
-    console.error('Token not found');
-    return; 
-  }
+  // if (!token) {
+  //   console.error('Token not found');
+  //   return; 
+  // }
 
                 const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', {
   withCredentials: true,
-  headers: { 'Authorization': `Bearer ${token}` },
+
 })
 
                 setCourses(response.data); 
