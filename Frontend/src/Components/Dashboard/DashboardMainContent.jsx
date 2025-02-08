@@ -12,7 +12,7 @@ function DashboardMainContent() {
         try {
             console.log("Fetching courses...");
             
-            const response = await axios.get("http://localhost:5000/dashboard/courses", { 
+            const response = await axios.get("https://scope-project-backend.onrender.com/dashboard/courses", { 
                 withCredentials: true 
             });
 
@@ -33,7 +33,7 @@ function DashboardMainContent() {
     const handleEnroll = async (courseId) => {
         try {
             const response = await axios.post(
-                'http://localhost:5000/dashboard/add-course',
+                'https://scope-project-backend.onrender.com/dashboard/add-course',
                 { courseId },
                 { withCredentials: true } // Include credentials for authentication
             );
