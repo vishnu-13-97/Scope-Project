@@ -256,7 +256,7 @@ router.get('/edit-profile',authenticateJWT,async(req,res)=>{
 });
 
 
-router.post('/logout', (req, res) => {
+router.post('/logout', authenticateJWT,(req, res) => {
     console.log("Logout request received. Session:", req.session); // Debugging session before destroying
 
     if (!req.session) {
