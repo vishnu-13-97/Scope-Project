@@ -37,57 +37,76 @@ router.get('/', authenticateJWT, async (req, res) => {
     }
   });
   
-  router.post('/changepassword', authenticateJWT, async (req, res) => {
+router.post('/changepassword', authenticateJWT, async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
-  
-  
     try {
-        // Find the user by the id stored in the JWT
+        // Validate JWT and session
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized access' });
+        }
+
+        if (!req.session.user || !req.session.user.email) {
+            return res.status(400).json({ message: 'Session validation failed' });
+        }
+
+        // Find the user in the database
         const user = await studentmodel.findById(req.user.id);
-        if (!user) return res.status(404).json({ message: 'User not found' });
-  
-        // Validate session email matches the user email
-        if (req.session.user.id !== user.id) {
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Validate session email matches user email
+        if (req.session.user.email !== user.email) {
             return res.status(400).json({ message: 'Email validation failed' });
         }
-  
-        // Compare the current password with the stored hashed password
+
+        // Check current password
         const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch) return res.status(400).json({ message: 'Incorrect current password' });
-  
-        // Check if newPassword and confirmPassword match
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Incorrect current password' });
+        }
+
+        // Ensure newPassword and confirmPassword match
         if (newPassword !== confirmPassword) {
             return res.status(400).json({ message: 'New password and confirmation do not match' });
         }
-  
-        
+
         // Hash the new password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
-        // Update the user's password in the database
-        user.password = hashedPassword;
-        await user.save();
-        req.session.destroy((err) => {
-          if (err) return res.status(500).json({ message: "Session destruction error" });})
-     
-     res.clearCookie('token'); // Clear specific cookie if applicable
-     res.clearCookie('connect.sid', {
-       path: '/',
-       httpOnly: true,
-       secure: true, // Adjust based on environment (false for localhost, true for production https)
-       sameSite: 'Lax'
-     });
-  
-        res.status(200).json({ message: 'Password changed successfully' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-    }
-  });
 
-  
+        // Update password in the database
+        user.password = hashedPassword;
+        await user.save().catch(err => {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Failed to update password' });
+        });
+
+        // Destroy session and clear cookies
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Session destruction error:', err);
+                return res.status(500).json({ message: 'Session destruction failed' });
+            }
+        });
+
+        res.clearCookie('token'); 
+        res.clearCookie('connect.sid', {
+            path: '/',
+            httpOnly: true,
+            secure: false, // Adjust based on environment
+            sameSite: 'Lax'
+        });
+
+        return res.status(200).json({ message: 'Password changed successfully' });
+
+    } catch (err) {
+        console.error('Server error:', err);
+        return res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.get('/edit-profile',authenticateJWT,async(req,res)=>{
     try {
       
