@@ -3,55 +3,56 @@ import React, { useEffect, useState } from 'react';
 
 function DashboardMainContent() {
     const [courses, setCourses] = useState([]);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null);     
     const [loading, setLoading] = useState(true);
-    const [enrollmentSuccess, setEnrollmentSuccess] = useState(null);
+    const [enrollmentSuccess, setEnrollmentSuccess] = useState(null); // To track enrollment success message
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('https://scope-project-backend.onrender.com/dashboard/courses', {
-                    withCredentials: true,
-                });
+                const response = await axios.get('http://localhost:5000/dashboard/courses', { withCredentials: true });
                 setCourses(response.data); 
             } catch (err) {
                 setError('Error fetching courses');
                 console.error(err);
             } finally {
-                setLoading(false);
+                setLoading(false); 
             }
         };
 
         fetchCourses();
-    }, []);
+    }, []); 
 
     const handleEnroll = async (courseId) => {
         try {
             const response = await axios.post(
-                'https://scope-project-backend.onrender.com/dashboard/add-course',
+                'http://localhost:5000/dashboard/add-course',
                 { courseId },
-                { withCredentials: true }
+                { withCredentials: true } // Include credentials for authentication
             );
             setEnrollmentSuccess(`Successfully enrolled in ${response.data.courseName}`);
-
-            // Optionally, refresh courses list after enrollment
-            setTimeout(() => setEnrollmentSuccess(null), 3000); // Reset success message after 3 sec
+        
         } catch (error) {
             console.error('Error enrolling in course:', error);
             setEnrollmentSuccess('Failed to enroll in course');
-            setTimeout(() => setEnrollmentSuccess(null), 3000); // Reset error message after 3 sec
         }
     };
 
-    if (loading) return <p className='text-center'>Loading courses...</p>;
-    if (error) return <p className='text-center text-danger'>{error}</p>;
+    if (loading) {
+        return <p className='text-center'>Loading courses...</p>;
+    }
+
+    if (error) {
+        return <p className='text-center'>{error}</p>;
+    }
 
     return (
         <div className="main-content">
             <div className="row">
                 <div className="col-md-12">
                     <div className="table-wrapper">
-                        {/* Table Title */}
+
+                        {/* Table title */}
                         <div className="table-title">
                             <div className="row">
                                 <div className="col-sm-6 p-0 flex justify-content-lg-start justify-content-center">
@@ -62,12 +63,14 @@ function DashboardMainContent() {
 
                         {/* Enrollment Success Message */}
                         {enrollmentSuccess && (
-                            <div className="alert alert-success text-center">{enrollmentSuccess}</div>
+                            <div className="alert alert-success">
+                                {enrollmentSuccess}
+                            </div>
                         )}
 
                         {/* Table */}
                         <table className="table table-striped table-hover">
-                            <thead className="bg-light">
+                            <thead style={{ backgroundColor: 'smokewhite' }}>
                                 <tr>
                                     <th style={{ fontSize: '20px' }}>Course Name</th>
                                     <th style={{ fontSize: '20px' }}>Course Fee</th>
@@ -78,13 +81,13 @@ function DashboardMainContent() {
                             <tbody>
                                 {courses.map((course) => (
                                     <tr key={course._id}>
-                                        <td>{course.courseName}</td>
-                                        <td>{course.courseFee}</td>
-                                        <td>{course.duration}</td>
+                                        <td>{course.CourseName}</td>
+                                        <td>{course.CourseFee}</td>
+                                        <td>{course.Duration}</td>
                                         <td>
                                             <button 
                                                 className="btn btn-primary"
-                                                onClick={() => handleEnroll(course._id)}
+                                                onClick={() => handleEnroll(course._id)} // Call enroll function on click
                                             >
                                                 Enroll
                                             </button>
@@ -93,6 +96,20 @@ function DashboardMainContent() {
                                 ))}
                             </tbody>
                         </table>
+
+                        {/* Pagination (uncomment if needed) */}
+                        {/* <div className="clearfix">
+                            <div className="hint-text">Showing <b>5</b> out of <b>25</b></div>
+                            <ul className="pagination">
+                                <li className="page-item disabled"><a href="/">Previous</a></li>
+                                <li className="page-item active"><a href="/" className="page-link">1</a></li>
+                                <li className="page-item"><a href="/" className="page-link">2</a></li>
+                                <li className="page-item"><a href="/" className="page-link">3</a></li>
+                                <li className="page-item"><a href="/" className="page-link">4</a></li>
+                                <li className="page-item"><a href="/" className="page-link">5</a></li>
+                                <li className="page-item"><a href="/" className="page-link">Next</a></li>
+                            </ul>
+                        </div> */}
 
                     </div>
                 </div>
