@@ -42,7 +42,7 @@ function DashboardProfileEdit() {
   const [citiesList, setCitiesList] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/dashboard/edit-profile', { withCredentials: true })
+    axios.get('https://scope-project-backend.onrender.com/dashboard/edit-profile', { withCredentials: true })
       .then((response) => {
         const data = response.data;
        
@@ -56,7 +56,7 @@ function DashboardProfileEdit() {
 
 
         if (data.avatar) {
-          setPreviewAvatar(`http://localhost:5000/${data.avatar}`);
+          setPreviewAvatar(`https://scope-project-backend.onrender.com/${data.avatar}`);
         }
         // Set the states and cities based on fetched country and state
         if (data.country) {
@@ -132,7 +132,7 @@ function DashboardProfileEdit() {
     });
   
     try {
-      await axios.put("http://localhost:5000/dashboard/update-profile", formDataToSend, {
+      await axios.put("https://scope-project-backend.onrender.com/dashboard/update-profile", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
