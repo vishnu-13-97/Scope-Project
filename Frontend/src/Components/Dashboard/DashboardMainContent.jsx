@@ -7,21 +7,28 @@ function DashboardMainContent() {
     const [loading, setLoading] = useState(true);
     const [enrollmentSuccess, setEnrollmentSuccess] = useState(null); // To track enrollment success message
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/dashboard/courses', { withCredentials: true });
-                setCourses(response.data); 
-            } catch (err) {
-                setError('Error fetching courses');
-                console.error(err);
-            } finally {
-                setLoading(false); 
-            }
-        };
+ useEffect(() => {
+    const fetchCourses = async () => {
+        try {
+            console.log("Fetching courses...");
+            
+            const response = await axios.get("http://localhost:5000/dashboard/courses", { 
+                withCredentials: true 
+            });
 
-        fetchCourses();
-    }, []); 
+            console.log("Courses received:", response.data); // Debug response
+            setCourses(response.data); 
+        } catch (err) {
+            console.error("Error fetching courses:", err.response?.data || err.message);
+            setError("Error fetching courses");
+        } finally {
+            setLoading(false); 
+        }
+    };
+
+    fetchCourses();
+}, []);
+
 
     const handleEnroll = async (courseId) => {
         try {
