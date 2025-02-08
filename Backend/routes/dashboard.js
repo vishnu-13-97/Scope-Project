@@ -255,29 +255,33 @@ router.get('/edit-profile',authenticateJWT,async(req,res)=>{
     }
 });
 
+
 router.post('/logout', (req, res) => {
+    console.log("Logout request received. Session:", req.session); // Debugging session before destroying
+
+    if (!req.session) {
+        return res.status(400).json({ message: "No active session found" });
+    }
+
     req.session.destroy((err) => {
-      if (err) {
-        console.error('Error destroying session:', err); 
-        return res.status(500).json({ message: 'Could not log out' });
-      }
-  
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).json({ message: 'Could not log out' });
+        }
 
+        console.log("Session destroyed successfully.");
 
-      
-     
-      res.clearCookie('token');
-      res.clearCookie('connect.sid', {
-        path: '/',
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'Lax'
-      });
-  
-      
-      return res.status(200).json({ message: 'Logged out successfully' });
+        // Clear cookies
+        res.clearCookie('token');
+        res.clearCookie('connect.sid', {
+            path: '/',
+            httpOnly: true,
+            secure: false, 
+            sameSite: 'Lax'
+        });
+
+        return res.status(200).json({ message: 'Logged out successfully' });
     });
-  });
-  
+});
 
   module.exports =router;
