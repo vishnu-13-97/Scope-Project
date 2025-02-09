@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 
 function DashboardSidebar() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function DashboardSidebar() {
     const response = await axios.post('https://scope-project-backend.onrender.com/dashboard/logout', {}, { withCredentials: true, timeout: 5000 });
 
     if (response.data.message === 'Logged out successfully') {
-      navigate('/login');
+     window.location.href = '/login'
     } else {
       console.error('Unexpected logout response:', response.data);
     }
