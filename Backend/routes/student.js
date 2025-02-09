@@ -254,11 +254,18 @@ router.post("/login", async (req, res) => {
 });
 
 router.get('/login', authenticateJWT, (req, res) => {
-  const user = req.user;
-  
-  if (user) {
-    return res.status(200).json({ message: 'User already logged in', user });
-  } else {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({ message: 'User not logged in' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.status(200).json({ message: 'User already logged in', user: decoded });
+  } catch (err) {
+    console.error(err);
     return res.status(401).json({ message: 'User not logged in' });
   }
 });
