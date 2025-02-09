@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 function DashboardSidebar() {
-  const navigate = useNavigate();
+ 
 
  const handleLogout = async (e) => {
   e.preventDefault();
