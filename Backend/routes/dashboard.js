@@ -41,24 +41,15 @@ router.post('/changepassword', authenticateJWT, async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     try {
-        // Validate JWT and session
+        // Validate JWT token
         if (!req.user || !req.user.id) {
             return res.status(401).json({ message: 'Unauthorized access' });
-        }
-
-        if (!req.session.user || !req.session.user.email) {
-            return res.status(400).json({ message: 'Session validation failed' });
         }
 
         // Find the user in the database
         const user = await studentmodel.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Validate session email matches user email
-        if (req.session.user.email !== user.email) {
-            return res.status(400).json({ message: 'Email validation failed' });
         }
 
         // Check current password
@@ -78,28 +69,16 @@ router.post('/changepassword', authenticateJWT, async (req, res) => {
 
         // Update password in the database
         user.password = hashedPassword;
-        await user.save().catch(err => {
-            console.error('Database error:', err);
-            return res.status(500).json({ message: 'Failed to update password' });
-        });
+        await user.save();
 
-        // Destroy session and clear cookies
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Session destruction error:', err);
-                return res.status(500).json({ message: 'Session destruction failed' });
-            }
-        });
-
-        res.clearCookie('token'); 
-        res.clearCookie('connect.sid', {
-            path: '/',
+        // Clear the JWT token cookie to force re-login
+        res.clearCookie('token', {
             httpOnly: true,
-            secure: false, // Adjust based on environment
-            sameSite: 'Lax'
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         });
 
-        return res.status(200).json({ message: 'Password changed successfully' });
+        return res.status(200).json({ message: 'Password changed successfully, please log in again' });
 
     } catch (err) {
         console.error('Server error:', err);
