@@ -62,9 +62,6 @@ function Login() {
           rememberMe
         },
         {
-          headers: {
-            'Content-Type': 'application/json'
-          },
           withCredentials: true
         }
       );
