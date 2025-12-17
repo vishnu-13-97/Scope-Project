@@ -6,7 +6,22 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const path = require("path");
 require("dotenv").config();
+const sendMail = require("./mailer");
 
+
+
+setTimeout(async () => {
+  try {
+    await sendMail(
+      process.env.EMAIL_USER,
+      "Render Startup Test",
+      "If you get this, email works."
+    );
+    console.log("✅ STARTUP MAIL SENT");
+  } catch (err) {
+    console.error("❌ STARTUP MAIL FAILED:", err);
+  }
+}, 5000);
 // Routes
 const StudentRouter = require("./routes/student");
 const DashboardRouter = require("./routes/dashboard");
