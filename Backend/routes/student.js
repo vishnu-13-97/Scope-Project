@@ -102,6 +102,8 @@ router.post('/register', async(req, res) => {
 
 
 router.post("/send-otp", async (req, res) => {
+  console.log("SESSION:", req.session);
+
   const { email } = req.body;
 
   try {
